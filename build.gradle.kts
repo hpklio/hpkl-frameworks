@@ -3,6 +3,11 @@ plugins {
     pklConfigs
 }
 
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+}
+
 pklConfigs {
     secret(".*password.*")
     secret(".*secret.*")
