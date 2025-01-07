@@ -13,15 +13,29 @@ abstract class UploadPklTask @Inject constructor(
             val zipPath = it.outputDir.file("dist/${it.name}@${version}.zip").get().asFile.absolutePath
             val metadataPath = it.outputDir.file("dist/${it.name}@${version}").get().asFile.absolutePath
             val runtime = Runtime.getRuntime()
-            runtime.exec(
+            val ghProcess = runtime.exec(
                 "gh release upload v${version} ${zipPath}"
             )
-            runtime.exec(
+
+            if (ghProcess.waitFor() != 0) {
+                throw RuntimeException(ghProcess.errorStream.bufferedReader().readText())
+            }
+
+            val mkDir = runtime.exec(
                 "mkdir -p packages/hpkl-frameworks"
             )
-            runtime.exec(
+
+            if (mkDir.waitFor() != 0) {
+                throw RuntimeException(ghProcess.errorStream.bufferedReader().readText())
+            }
+
+            val cpProc = runtime.exec(
                 "cp $metadataPath packages/hpkl-frameworks/${it.name}@${version}"
             )
+
+            if (cpProc.waitFor() != 0) {
+                throw RuntimeException(ghProcess.errorStream.bufferedReader().readText())
+            }
         }
     }
 }
