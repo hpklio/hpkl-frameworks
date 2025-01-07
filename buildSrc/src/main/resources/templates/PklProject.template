@@ -4,7 +4,7 @@ package {
   name = "{{frameworkName}}"
   version = "$pklPackageVersion"
   baseUri = "package://pkg.hpkl.io/hpkl-frameworks/\\(name)"
-  packageZipUrl = "https://github.com/hpklio/hpkl-frameworks/releases/download/hpkl-frameworks@\\(version)/\\(name)@\\(version).zip"
+  packageZipUrl = "https://github.com/hpklio/hpkl-frameworks/releases/download/v\\(version)/\\(name)@\\(version).zip"
   sourceCode = "https://github.com/hpklio/hpkl-frameworks"
   sourceCodeUrlScheme = "https://github.com/hpklio/hpkl-frameworks/blob/${pklPackageVersion}/generated-package%{path}#%{line}-%{endLine}"
   license = "Apache-2.0"
