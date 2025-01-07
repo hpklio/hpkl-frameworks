@@ -42,6 +42,12 @@ jobs:
           GRADLE_SECRET: ${{ secrets.GRADLE_SECRET }}
         run: |
           echo -e "gradle.publish.key=${GRADLE_KEY}\\ngradle.publish.secret=${GRADLE_SECRET}\\n" > ~/.gradle/gradle.properties
+      - uses: actions/checkout@v4
+        with:
+          repository: hpklio/packages
+          ref: 'main'
+          token:  ${{ secrets.PUBLISH_TOKEN }}
+          path: 'packages'
       - name: Generate and Upload
         run: ./gradlew -Pversion=${{ steps.vars.outputs.tag }} build generatePkl uploadPkl
         env:
