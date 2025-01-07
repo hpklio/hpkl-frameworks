@@ -144,6 +144,11 @@ class PklGenerator(classLoader: ClassLoader, secretFields: Set<Pattern>) {
 
         val isCollection = isCollection(tree.group.type)
 
+        if (tree.properties?.isEmpty() ?: true && tree.children.isEmpty() && !isCollection) {
+            return null
+        }
+
+
         val result = mutableListOf<PklClassElement>()
 
         if (!isCollection) {
@@ -175,9 +180,6 @@ class PklGenerator(classLoader: ClassLoader, secretFields: Set<Pattern>) {
         if (process) {
             val className = tree.group.name.split(".").last().toCamelCase()
 
-//            val isModuleClass = className.equals(mainClassName, ignoreCase = true)
-
-
             val properties = tree.properties?.map {
                 if (wellKnownTypes.containsKey(it.type)) {
                     val typeMapper = wellKnownTypes[it.type]!!
@@ -191,8 +193,7 @@ class PklGenerator(classLoader: ClassLoader, secretFields: Set<Pattern>) {
                     generateCollection(result, it, moduleName, allClasses)
                 } else if (!it.type.startsWith("java.")) {
                     val innerClassName = javaClassWriter.tryToLoadClass(it.type)?.let { cl ->
-                            generateClass(cl, moduleName, allClasses)
-                            cl.className
+                            generateClass(cl, moduleName, allClasses)?.let { cl.className }
                     } ?: "Any"
                     generateProperty(it, innerClassName, null)
                 } else {
@@ -364,9 +365,10 @@ class PklGenerator(classLoader: ClassLoader, secretFields: Set<Pattern>) {
         property: MetadataGroupTree,
         allClasses: Set<String>
     ) : PklProperty {
-        val className = if (allClasses.contains(property.className)) {
-            property.className
-        } else "Any"
+        val className = if (property.properties?.isEmpty() ?: true && property.children.isEmpty())
+            "Any" else if (allClasses.contains(property.className)) {
+                property.className
+            } else "Any"
 
         return PklProperty(
             name.toCamelCase(),
