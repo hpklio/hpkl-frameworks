@@ -26,7 +26,7 @@ abstract class UploadPklTask @Inject constructor(
             )
 
             if (mkDir.waitFor() != 0) {
-                throw RuntimeException(ghProcess.errorStream.bufferedReader().readText())
+                throw RuntimeException(mkDir.errorStream.bufferedReader().readText())
             }
 
             val cpProc = runtime.exec(
@@ -34,7 +34,7 @@ abstract class UploadPklTask @Inject constructor(
             )
 
             if (cpProc.waitFor() != 0) {
-                throw RuntimeException(ghProcess.errorStream.bufferedReader().readText())
+                throw RuntimeException(cpProc.errorStream.bufferedReader().readText())
             }
         }
     }
