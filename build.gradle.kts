@@ -54,5 +54,8 @@ pklConfigs {
             dependency("org.springframework:spring-core:6.1.6")
             dependency("net.devh:grpc-server-spring-boot-starter:3.1.0.RELEASE")
         }
+        register("sentry-6.28.0") {
+            dependency("io.sentry:sentry-spring-boot:6.28.0")
+        }
     }
 }

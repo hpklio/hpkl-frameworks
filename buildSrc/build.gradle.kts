@@ -18,7 +18,11 @@ dependencies {
   implementation("org.pkl-lang:pkl-tools:0.27.1")
 }
 
-val pklPackageVersion = project.version
+val pklPackageVersion =
+  if (project.version.toString() == "unspecified")
+    "0.1.0-SNAPSHOT"
+  else
+    project.version.toString()
 
 tasks.processResources {
   eachFile {

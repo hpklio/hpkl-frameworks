@@ -16,6 +16,8 @@ class JavaClassLoader(
 
             return if (clazz.isEnum) {
                 parseEnum(propertyType, clazz)
+            } else if (clazz.isInterface) {
+                null
             } else {
                 parseClass(propertyType, clazz)
             }?.let {
