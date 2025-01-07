@@ -52,6 +52,7 @@ jobs:
       - name: Generate and Upload
         run: ./gradlew -Pversion=${{ steps.vars.outputs.tag }} build generatePkl uploadPkl
         env:
+          GH_TOKEN: ${{ github.token }}
           CI_BRANCH_NAME:  ${{ github.ref_name }}
           CI_SHORT_COMMIT: ${{ steps.vars.outputs.sha_short }}
 
