@@ -13,8 +13,11 @@ abstract class UploadPklTask @Inject constructor(
             val zipPath = it.outputDir.file("dist/${it.name}@${version}.zip").get().asFile.absolutePath
             val metadataPath = it.outputDir.file("dist/${it.name}@${version}").get().asFile.absolutePath
             val runtime = Runtime.getRuntime()
+            val envp = arrayOf("GH_TOKEN=${System.getenv("GH_TOKEN")}")
             val ghProcess = runtime.exec(
-                "gh release upload v${version} ${zipPath}"
+                "gh release upload v${version} ${zipPath}",
+                envp,
+                null
             )
 
             if (ghProcess.waitFor() != 0) {
